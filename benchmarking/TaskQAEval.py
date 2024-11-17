@@ -1,4 +1,5 @@
 from .utils.metrics import * 
+from .utils.prompting import *
 
 class EvaluateOnQA(EvaluateOnTask):
 
@@ -21,7 +22,8 @@ class EvaluateOnQA(EvaluateOnTask):
 
         for example in dataset["validation"]:
             question, context, answer_list = fetch_fn(example)
-            predicted_answer = model.get_answer(question, context)
+            prompt = mistral_prompt(question, context, task = "QA")
+            predicted_answer = model.get_answer(prompt)
 
             predictions.append(predicted_answer)
             references.append(answer_list)
